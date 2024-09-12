@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+    ports:
+      - "3000:3000" 
+    volumes:
+      - .:/usr/src/app 
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:yourpassword@db:5432/yourdatabase
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
