@@ -1,4 +1,8 @@
 import express, { Request, Response } from 'express';
+import { config } from 'dotenv';
+import { PrismaClient } from '@prisma/client'
+
+config();
 
 const app = express();
 const port = 3000;
@@ -13,24 +17,25 @@ app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
 
-//////////////////
+const prisma = new PrismaClient()
+/// npx prisma studio
+/// GUI
 
-// import { PrismaClient } from '@prisma/client'
+async function main() {
+  const usersWithPosts = await prisma.user.findMany({
+    include: {
+      posts: true,
+    },
+  })
+  console.dir(usersWithPosts, { depth: null })
+}
 
-// const prisma = new PrismaClient()
-
-// async function main() {
-//   // ... you will write your Prisma Client queries here
-//   const allUsers = await prisma.user.findMany()
-//   console.log(allUsers)
-// }
-
-// main()
-//   .then(async () => {
-//     await prisma.$disconnect()
-//   })
-//   .catch(async (e) => {
-//     console.error(e)
-//     await prisma.$disconnect()
-//     process.exit(1)
-//   })
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
