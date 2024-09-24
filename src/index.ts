@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express';
 import { config } from 'dotenv';
 import authRoutes from './routes/authRotes';
+import cors from 'cors';
 
 config();
 
 const app = express();
+app.use(cors());
 const port = 3000;
 
 app.use(express.json());
