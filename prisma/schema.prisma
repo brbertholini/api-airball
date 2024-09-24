@@ -19,3 +19,12 @@ model User {
   email    String @unique
   password String
 }
+
+model Court {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  location        String
+  type            String
+  lighting        Int
+  usage_frequency Int
+}

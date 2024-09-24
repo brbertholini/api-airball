@@ -10,7 +10,7 @@ export class AuthController {
         const { email, password, name } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+            return res.status(400).json({ error: 'Está faltando dados, por favor preencha tudo antes de realizar o cadastro!' });
         }
 
         try {
@@ -47,12 +47,12 @@ export class AuthController {
             const user = await prisma.user.findUnique({ where: { email } });
 
             if (!user) {
-                return res.status(401).json({ error: 'Email ou senha inválidos' });
+                return res.status(401).json({ error: 'Usuário não encontrado' });
             }
 
             const passwordMatch = await comparePasswords(password, user.password);
             if (!passwordMatch) {
-                return res.status(401).json({ error: 'Email ou senha inválidos' });
+                return res.status(401).json({ error: 'Credenciais Incorretas' });
             }
 
             const token = jwt.sign({
