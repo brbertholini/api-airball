@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 export class AuthController {
     static async signup(req: Request, res: Response) {
-        const { email, password } = req.body;
+        const { email, password, name } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ error: 'Email e senha são obrigatórios' });
@@ -24,7 +24,8 @@ export class AuthController {
             const newUser = await prisma.user.create({
                 data: {
                     email,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    name
                 }
             });
 
