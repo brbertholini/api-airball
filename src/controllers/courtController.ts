@@ -5,9 +5,9 @@ const prisma = new PrismaClient();
 
 export class CourtController {
     static async createCourt(req: Request, res: Response) {
-        const { name, location, type, lighting, usage_frequency } = req.body;
+        const { name, location, type, image, lighting_quality, hoop_quality, usage_frequency } = req.body;
 
-        if (!name || !location || !type || typeof lighting !== 'number' || typeof usage_frequency !== 'number') {
+        if (!name || !location || !type || typeof lighting_quality !== 'number' || typeof hoop_quality !== 'number' || typeof usage_frequency !== 'number') {
             return res.status(400).json({ error: 'Todos os campos são obrigatórios e devem ser preenchidos corretamente' });
         }
 
@@ -22,7 +22,9 @@ export class CourtController {
                     name,
                     location,
                     type,
-                    lighting,
+                    image,
+                    lighting_quality,
+                    hoop_quality,
                     usage_frequency,
                 },
             });
