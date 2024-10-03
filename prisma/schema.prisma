@@ -21,10 +21,12 @@ model User {
 }
 
 model Court {
-  id              Int      @id @default(autoincrement())
-  name            String   @unique
-  location        String
-  type            String
-  lighting        Int
-  usage_frequency Int
+  id               Int      @id @default(autoincrement())
+  name             String   @unique
+  location         String
+  type             String
+  image            Bytes?
+  lighting_quality Int
+  hoop_quality     Int
+  usage_frequency  Int
 }
