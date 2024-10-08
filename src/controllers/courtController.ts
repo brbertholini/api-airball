@@ -35,4 +35,33 @@ export class CourtController {
             res.status(500).json({ error: 'Erro ao criar quadra' });
         }
     }
+
+    static async getAllCourts(req: Request, res: Response) {
+        try {
+            const courts = await prisma.court.findMany();
+            res.status(200).json(courts);
+        } catch (error) {
+            console.error('Erro ao buscar todas as quadras:', error);
+            res.status(500).json({ error: 'Erro ao buscar quadras' });
+        }
+    }
+
+    static async getCourtById(req: Request, res: Response) {
+        const { id } = req.params;
+
+        try {
+            const court = await prisma.court.findUnique({
+                where: { id: Number(id) }
+            });
+
+            if (!court) {
+                return res.status(404).json({ error: 'Quadra não encontrada' });
+            }
+
+            res.status(200).json(court);
+        } catch (error) {
+            console.error('Erro ao buscar quadra específica:', error);
+            res.status(500).json({ error: 'Erro ao buscar quadra' });
+        }
+    }
 }
