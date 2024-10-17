@@ -4,7 +4,6 @@ import * as geolocationService from '../services/geolocationService';
 export const getGeolocation = async (req: Request, res: Response): Promise<void> => {
     try {
         const query= req.params.query;
-        console.log('query', query)
         
         if (!query || query.trim().length === 0) {
             res.status(400).json({ error: 'Query inválida' });
@@ -16,7 +15,8 @@ export const getGeolocation = async (req: Request, res: Response): Promise<void>
         const formattedData = {
             latitude: data.results[0]?.geometry.lat,
             longitude: data.results[0]?.geometry.lng,
-            formatted: data.results[0]?.formatted
+            formatted: data.results[0]?.formatted,
+            confidence: data.results[0]?.confidence
         };
 
         res.status(200).json(formattedData);
