@@ -15,7 +15,7 @@ if (!OPENCAGE_API_KEY) {
 }
 
 export const getGeolocation = async (query: string): Promise<GeolocationResponse> => {
-    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=${OPENCAGE_API_KEY}`;
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=${OPENCAGE_API_KEY}&language=pt&pretty=1`;
     try {
         const response = await axios.get<GeolocationResponse>(url);
 
