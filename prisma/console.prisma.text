@@ -1,0 +1,2 @@
+// rodar migrations
+npx prisma migrate deploy
