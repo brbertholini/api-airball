@@ -4,22 +4,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export interface GeolocationResponse {
-    results: any[];
+    features: any[];
 }
 
-const OPENCAGE_API_KEY = process.env.OPENCAGE_API_KEY;
+const MAPBOX_API_KEY = process.env.MAPBOX_API_KEY;
 
-if (!OPENCAGE_API_KEY) {
-    console.error('OPENCAGE_API_KEY não está definida. Verifique o arquivo .env');
+if (!MAPBOX_API_KEY) {
+    console.error('MAPBOX_API_KEY não está definida. Verifique o arquivo .env');
     process.exit(1);
 }
 
 export const getGeolocation = async (query: string): Promise<GeolocationResponse> => {
-    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(query)}&key=${OPENCAGE_API_KEY}&language=pt&pretty=1`;
+    const url = `https://api.mapbox.com/search/geocode/v6/forward?country=br&q=${encodeURIComponent(query)}&access_token=${MAPBOX_API_KEY}&language=pt`;
     try {
         const response = await axios.get<GeolocationResponse>(url);
 
-        if (response.data.results.length === 0) {
+        if (response.data.features.length === 0) {
             throw new Error('Nenhum resultado encontrado');
         }
 

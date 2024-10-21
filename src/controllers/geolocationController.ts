@@ -13,10 +13,11 @@ export const getGeolocation = async (req: Request, res: Response): Promise<void>
         const data = await geolocationService.getGeolocation(query);
         
         const formattedData = {
-            latitude: data.results[0]?.geometry.lat,
-            longitude: data.results[0]?.geometry.lng,
-            formatted: data.results[0]?.formatted,
-            confidence: data.results[0]?.confidence
+            name: data.features[0]?.properties.name,
+            latitude: data.features[0]?.properties.coordinates.latitude,
+            longitude: data.features[0]?.properties.coordinates.longitude,
+            accuracy: data.features[0]?.properties.accuracy,
+            place_formated: data.features[0]?.properties.place_formated
         };
 
         res.status(200).json(formattedData);
