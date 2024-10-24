@@ -25,7 +25,10 @@ export class AuthController {
                 data: {
                     email,
                     password: hashedPassword,
-                    name
+                    name,
+                    prefered_position: '',
+                    avatar: '',
+                    bio: ''
                 }
             });
 
