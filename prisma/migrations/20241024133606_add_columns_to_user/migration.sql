@@ -15,6 +15,6 @@ ALTER TABLE `court` MODIFY `address` VARCHAR(191) NOT NULL,
     MODIFY `longitude` DECIMAL(65, 30) NOT NULL;
 
 -- AlterTable
-ALTER TABLE `user` ADD COLUMN `avatar` VARCHAR(191) NOT NULL,
-    ADD COLUMN `bio` VARCHAR(191) NOT NULL,
-    ADD COLUMN `prefered_position` VARCHAR(191) NOT NULL;
+ALTER TABLE `user` ADD COLUMN `avatar` VARCHAR(191) NULL,
+    ADD COLUMN `bio` VARCHAR(191) NULL,
+    ADD COLUMN `prefered_position` VARCHAR(191) NULL;
