@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { CourtController } from '../controllers/courtController';
 import authenticateToken from '../middlewares/authenticateToken';
+import { MatchController } from '../controllers/matchController';
 
 const router = Router();
 
@@ -25,6 +26,30 @@ router.get('/courts/getById/:id', authenticateToken, async (req: Request, res: R
         await CourtController.getCourtById(req, res);
     } catch (error: any) {
         res.status(500).json({ message: 'Erro ao buscar a quadra', error: error.message });
+    }
+});
+
+router.post('/matches/create', authenticateToken, async(req: Request, res: Response) => {
+    try {
+        await MatchController.createMatch(req,res);
+    } catch (error: any) {
+        res.status(500).json({message: "Erro ao criar partida", error: error.message});
+    }
+})
+
+router.get('/matches', authenticateToken, async(req: Request, res: Response) => {
+    try {
+        await MatchController.getAllMatches(req,res);
+    } catch (error: any) {
+        res.status(500).json({message: "Erro ao buscar partidas", error: error.message});
+    }
+})
+
+router.get('/matches/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await MatchController.getMatchById(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
     }
 });
 

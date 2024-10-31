@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id                Int    @id @default(autoincrement())
+  id                Int       @id @default(autoincrement())
   name              String
-  email             String @unique
+  email             String    @unique
   password          String
   prefered_position String?
   avatar            String?
   bio               String?
+  teams             TeamPlayer[]  
 }
 
 model Court {
@@ -34,4 +35,41 @@ model Court {
   address          String
   latitude         Decimal
   longitude        Decimal
+  matches          Match[]  // Relação com partidas
+}
+
+model Team {
+  id        Int          @id @default(autoincrement())
+  match     Match        @relation(fields: [matchId], references: [id])
+  matchId   Int
+  players   TeamPlayer[] 
+  isTeamA   Boolean      
+  score     Int?         
+  createdAt DateTime     @default(now())
+
+  @@unique([matchId, isTeamA]) 
+}
+
+model TeamPlayer {
+  id        Int      @id @default(autoincrement())
+  team      Team     @relation(fields: [teamId], references: [id])
+  teamId    Int
+  player    User     @relation(fields: [playerId], references: [id])
+  playerId  Int
+  createdAt DateTime @default(now())
+
+  @@unique([teamId, playerId]) 
+}
+
+model Match {
+  id        Int       @id @default(autoincrement())
+  court     Court     @relation(fields: [courtId], references: [id])
+  courtId   Int
+  teams     Team[]    
+  date      DateTime
+  status    String    @default("scheduled") 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([courtId, date]) 
 }

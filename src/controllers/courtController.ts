@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import * as geolocationService from '../services/geolocationService';
 
 const prisma = new PrismaClient();
 
@@ -17,17 +18,25 @@ export class CourtController {
                 return res.status(400).json({ error: 'Quadra já cadastrada com este nome' });
             }
 
+            const geoData = await geolocationService.getGeolocation(address);
+            
+            if (!geoData.features || geoData.features.length === 0) {
+                return res.status(400).json({ error: 'Endereço não encontrado' });
+            }
+
+            const location = geoData.features[0].properties;
+
             const newCourt = await prisma.court.create({
                 data: {
                     name,
-                    address,
+                    address: location.name || address,
                     type,
                     image,
                     lighting_quality,
                     hoop_quality,
                     usage_frequency,
-                    latitude: 0,
-                    longitude: 0
+                    latitude: location.coordinates.latitude,
+                    longitude: location.coordinates.longitude
                 },
             });
 
