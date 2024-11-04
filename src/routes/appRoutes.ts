@@ -45,6 +45,14 @@ router.post('/matches/addPlayer', authenticateToken, async (req: Request, res: R
     }
 });
 
+router.get('/matches/getTeam/:matchId', authenticateToken, async(req: Request, res: Response) => {
+    try {
+        await MatchController.getTeamByMatchId(req,res);
+    } catch (error: any) {
+        res.status(500).json({message: "Erro ao buscar partidas", error: error.message});
+    }
+})
+
 router.get('/matches', authenticateToken, async(req: Request, res: Response) => {
     try {
         await MatchController.getAllMatches(req,res);
@@ -60,6 +68,8 @@ router.get('/matches/:id', authenticateToken, async (req: Request, res: Response
         res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
     }
 });
+
+
 
 
 export default router;
