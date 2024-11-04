@@ -37,6 +37,14 @@ router.post('/matches/create', authenticateToken, async(req: Request, res: Respo
     }
 })
 
+router.post('/matches/addPlayer', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await MatchController.addPlayerToTeam(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao adicionar jogador ao time', error: error.message });
+    }
+});
+
 router.get('/matches', authenticateToken, async(req: Request, res: Response) => {
     try {
         await MatchController.getAllMatches(req,res);
@@ -52,5 +60,6 @@ router.get('/matches/:id', authenticateToken, async (req: Request, res: Response
         res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
     }
 });
+
 
 export default router;

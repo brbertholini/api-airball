@@ -59,6 +59,59 @@ export class MatchController {
         }
     }
 
+    
+    static async addPlayerToTeam(req: Request, res: Response) {
+        const { matchId, playerId, team } = req.body;
+
+        if (!matchId || !playerId || !team) {
+            return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+        }
+    
+        try {
+            const match = await prisma.match.findUnique({
+                where: { id: Number(matchId) },
+                include: { teams: true } 
+            });
+    
+            if (!match) {
+                return res.status(404).json({ error: 'Partida não encontrada' });
+            }
+    
+            const isTeamA = team === 'A';
+            const teamToUpdate = match.teams.find((t: { isTeamA: boolean; }) => t.isTeamA === isTeamA);
+    
+            if (!teamToUpdate) {
+                return res.status(400).json({ error: 'Time inválido' });
+            }
+    
+            const existingPlayer = await prisma.teamPlayer.findUnique({
+                where: {
+                    teamId_playerId: {
+                        teamId: teamToUpdate.id,
+                        playerId: playerId,
+                    }
+                }
+            });
+    
+            if (existingPlayer) {
+                return res.status(400).json({ error: 'Jogador já está neste time' });
+            }
+    
+            await prisma.teamPlayer.create({
+                data: {
+                    player: { connect: { id: playerId } },
+                    team: { connect: { id: teamToUpdate.id } }
+                }
+            });
+    
+            res.status(200).json({ message: 'Jogador adicionado ao time com sucesso' });
+        } catch (error) {
+            console.error('Erro ao adicionar jogador ao time:', error);
+            res.status(500).json({ error: 'Erro ao adicionar jogador ao time' });
+        }
+    }
+    
+
     static async getAllMatches(req: Request, res: Response) {
         try {
             const matches = await prisma.match.findMany({
@@ -115,4 +168,9 @@ export class MatchController {
             res.status(500).json({ error: 'Erro ao obter partida' });
         }
     }
+
+    static async getTeamById(req: Request, res: Response) {
+
+    }
+
 }
