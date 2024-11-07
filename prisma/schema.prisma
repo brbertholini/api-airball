@@ -40,6 +40,7 @@ model Court {
   comments         CourtComment[]
 }
 
+
 model Team {
   id        Int          @id @default(autoincrement())
   match     Match        @relation(fields: [matchId], references: [id])
@@ -74,6 +75,15 @@ model Match {
   updatedAt DateTime  @updatedAt
 
   @@unique([courtId, date]) 
+}
+
+model New {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  image     Bytes?
+  posted_at DateTime @default(now())
+  source    String   
 }
 
 model CourtComment {
