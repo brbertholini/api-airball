@@ -35,8 +35,9 @@ model Court {
   address          String
   latitude         Decimal
   longitude        Decimal
-  matches          Match[]  // Relação com partidas
+  matches          Match[]  
 }
+
 
 model Team {
   id        Int          @id @default(autoincrement())
@@ -72,4 +73,13 @@ model Match {
   updatedAt DateTime  @updatedAt
 
   @@unique([courtId, date]) 
+}
+
+model New {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  image     Bytes?
+  posted_at DateTime @default(now())
+  source    String   
 }

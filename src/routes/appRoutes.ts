@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { CourtController } from '../controllers/courtController';
 import authenticateToken from '../middlewares/authenticateToken';
 import { MatchController } from '../controllers/matchController';
+import { NewsController } from '../controllers/newsController';
 
 const router = Router();
 
@@ -66,6 +67,30 @@ router.get('/matches/:id', authenticateToken, async (req: Request, res: Response
         await MatchController.getMatchById(req, res);
     } catch (error: any) {
         res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
+    }
+});
+
+router.post('/news', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await NewsController.createNews(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao criar noticia', error: error.message });
+    }
+});
+
+router.get('/news', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await NewsController.getAllNews(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao buscar as noticias', error: error.message });
+    }
+});
+
+router.get('/news/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await NewsController.getNewById(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao buscar a noticia', error: error.message });
     }
 });
 
