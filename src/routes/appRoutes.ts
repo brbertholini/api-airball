@@ -103,7 +103,7 @@ router.post('/courtComments', authenticateToken, async(req: Request, res: Respon
     }
 })
 
-router.get('/courtComments/:id', authenticateToken, async(req: Request, res: Response) => {
+router.get('/courtComments', authenticateToken, async(req: Request, res: Response) => {
     try {
         await CommentController.getCommentsByCourtId(req,res);
     } catch (error: any) {
