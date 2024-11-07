@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { CourtController } from '../controllers/courtController';
 import authenticateToken from '../middlewares/authenticateToken';
 import { MatchController } from '../controllers/matchController';
+import { CommentController } from '../controllers/commentController';
 
 const router = Router();
 
@@ -69,7 +70,20 @@ router.get('/matches/:id', authenticateToken, async (req: Request, res: Response
     }
 });
 
+router.post('/courtComments', authenticateToken, async(req: Request, res: Response) => {
+    try {
+        await CommentController.createComment(req,res);
+    } catch (error: any) {
+        res.status(500).json({message: "Erro ao criar comentário", error: error.message});
+    }
+})
 
-
+router.get('/courtComments/:id', authenticateToken, async(req: Request, res: Response) => {
+    try {
+        await CommentController.getCommentsByCourtId(req,res);
+    } catch (error: any) {
+        res.status(500).json({message: "Erro ao buscar comentários", error: error.message});
+    }
+})
 
 export default router;
