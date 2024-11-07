@@ -14,19 +14,20 @@ datasource db {
 }
 
 model User {
-  id                Int       @id @default(autoincrement())
+  id                Int            @id @default(autoincrement())
   name              String
-  email             String    @unique
+  email             String         @unique
   password          String
   prefered_position String?
   avatar            String?
   bio               String?
-  teams             TeamPlayer[]  
+  teams             TeamPlayer[]   
+  comments          CourtComment[]
 }
 
 model Court {
-  id               Int      @id @default(autoincrement())
-  name             String   @unique
+  id               Int            @id @default(autoincrement())
+  name             String         @unique
   type             String
   image            Bytes?
   lighting_quality Int
@@ -35,7 +36,8 @@ model Court {
   address          String
   latitude         Decimal
   longitude        Decimal
-  matches          Match[]  // Relação com partidas
+  matches          Match[]
+  comments         CourtComment[]
 }
 
 model Team {
@@ -72,4 +74,14 @@ model Match {
   updatedAt DateTime  @updatedAt
 
   @@unique([courtId, date]) 
+}
+
+model CourtComment {
+  id        Int      @id @default(autoincrement())
+  comment   String   
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  court     Court    @relation(fields: [courtId], references: [id])
+  courtId   Int
+  createdAt DateTime @default(now())
 }
