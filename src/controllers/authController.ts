@@ -62,7 +62,7 @@ export class AuthController {
                 userId: user.id
             }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
-            res.status(200).json({ message: 'Login bem-sucedido', token });
+            res.status(200).json({ message: 'Login bem-sucedido', token, user});
         } catch (error) {
             console.error('Error during login:', error);
             res.status(500).json({ error: 'Erro ao realizar login' });
