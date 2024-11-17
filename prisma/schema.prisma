@@ -21,7 +21,7 @@ model User {
   prefered_position String?
   avatar            String?
   bio               String?
-  teams             TeamPlayer[]   
+  teams             TeamPlayer[]
   comments          CourtComment[]
 }
 
@@ -29,7 +29,7 @@ model Court {
   id               Int            @id @default(autoincrement())
   name             String         @unique
   type             String
-  image            Bytes?
+  image            String?
   lighting_quality Int
   hoop_quality     Int
   usage_frequency  Int
@@ -40,17 +40,16 @@ model Court {
   comments         CourtComment[]
 }
 
-
 model Team {
   id        Int          @id @default(autoincrement())
   match     Match        @relation(fields: [matchId], references: [id])
   matchId   Int
-  players   TeamPlayer[] 
-  isTeamA   Boolean      
-  score     Int?         
+  players   TeamPlayer[]
+  isTeamA   Boolean
+  score     Int?
   createdAt DateTime     @default(now())
 
-  @@unique([matchId, isTeamA]) 
+  @@unique([matchId, isTeamA])
 }
 
 model TeamPlayer {
@@ -61,34 +60,34 @@ model TeamPlayer {
   playerId  Int
   createdAt DateTime @default(now())
 
-  @@unique([teamId, playerId]) 
+  @@unique([teamId, playerId])
 }
 
 model Match {
-  id        Int       @id @default(autoincrement())
-  court     Court     @relation(fields: [courtId], references: [id])
+  id        Int      @id @default(autoincrement())
+  court     Court    @relation(fields: [courtId], references: [id])
   courtId   Int
-  teams     Team[]    
+  teams     Team[]
   date      DateTime
-  status    String    @default("scheduled") 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  status    String   @default("scheduled")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@unique([courtId, date]) 
+  @@unique([courtId, date])
 }
 
 model New {
   id        Int      @id @default(autoincrement())
   title     String
   content   String
-  image     Bytes?
+  image     String?
   posted_at DateTime @default(now())
-  source    String   
+  source    String
 }
 
 model CourtComment {
   id        Int      @id @default(autoincrement())
-  comment   String   
+  comment   String
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
   court     Court    @relation(fields: [courtId], references: [id])

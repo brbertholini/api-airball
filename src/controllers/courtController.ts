@@ -19,7 +19,6 @@ export class CourtController {
             }
 
             const geoData = await geolocationService.getGeolocation(address);
-            
             if (!geoData.features || geoData.features.length === 0) {
                 return res.status(400).json({ error: 'Endereço não encontrado' });
             }
@@ -31,12 +30,12 @@ export class CourtController {
                     name,
                     address: location.name || address,
                     type,
-                    image,
+                    image: image?.uri || null, 
                     lighting_quality,
                     hoop_quality,
                     usage_frequency,
                     latitude: location.coordinates.latitude,
-                    longitude: location.coordinates.longitude
+                    longitude: location.coordinates.longitude,
                 },
             });
 
