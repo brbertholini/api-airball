@@ -4,8 +4,17 @@ import authenticateToken from '../middlewares/authenticateToken';
 import { MatchController } from '../controllers/matchController';
 import { NewsController } from '../controllers/newsController';
 import { CommentController } from '../controllers/commentController';
+import { UserController } from '../controllers/userController';
 
 const router = Router();
+
+router.put('/users/:id', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await UserController.updateUser(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao atualizar o usuario', error: error.message });
+    }
+});
 
 router.post('/courts/create', authenticateToken, async (req: Request, res: Response) => {
     try {

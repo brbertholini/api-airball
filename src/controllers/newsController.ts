@@ -19,7 +19,7 @@ export class NewsController {
           title,
           content,
           posted_at: createdAt,     
-          image: image ? Buffer.from(image, 'base64') : null,  
+          image: image?.uri || null,  
           source,
         },
       });
