@@ -64,17 +64,25 @@ router.get('/matches/getTeam/:matchId', authenticateToken, async(req: Request, r
     }
 })
 
-router.get('/matches', authenticateToken, async(req: Request, res: Response) => {
+router.get('/matches', authenticateToken, async (req: Request, res: Response) => {
     try {
-        await MatchController.getAllMatches(req,res);
+        await MatchController.getAllMatches(req, res);
     } catch (error: any) {
-        res.status(500).json({message: "Erro ao buscar partidas", error: error.message});
+        res.status(500).json({ message: "Erro ao buscar partidas", error: error.message });
     }
-})
+});
 
 router.get('/matches/:id', authenticateToken, async (req: Request, res: Response) => {
     try {
         await MatchController.getMatchById(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
+    }
+});
+
+router.get('/matches/getByCourtId/:courtId', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await MatchController.getMatchesByCourtId(req, res);
     } catch (error: any) {
         res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
     }

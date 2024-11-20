@@ -169,6 +169,43 @@ export class MatchController {
         }
     }
 
+    static async getMatchesByCourtId(req: Request, res: Response) {
+        const { courtId } = req.params;
+    
+        if (!courtId) {
+            return res.status(400).json({ error: 'O ID da quadra é obrigatório' });
+        }
+    
+        try {
+            const matches = await prisma.match.findMany({
+                where: {
+                    courtId: Number(courtId),
+                },
+                include: {
+                    court: true,
+                    teams: {
+                        include: {
+                            players: {
+                                include: {
+                                    player: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            if (matches.length === 0) {
+                return res.status(404).json({ error: 'Nenhuma partida encontrada para esta quadra' });
+            }
+
+            res.status(200).json(matches);
+        } catch (error) {
+            console.error('Erro ao listar partidas pela quadra:', error);
+            res.status(500).json({ error: 'Erro ao listar partidas pela quadra' });
+        }
+    }
+
     static async getTeamByMatchId(req: Request, res: Response) {
         const { matchId } = req.params;
 

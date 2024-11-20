@@ -29,7 +29,7 @@ export class UserController {
         data: {
             name: name ?? existingUser.name, 
             prefered_position: prefered_position ?? existingUser.prefered_position,
-            avatar: avatar ?? existingUser.avatar,
+            avatar: avatar.uri ?? existingUser.avatar,
             bio: bio ?? existingUser.bio,
         },
       });
