@@ -206,6 +206,52 @@ export class MatchController {
         }
     }
 
+    static async getMatchesByPlayerId(req: Request, res: Response) {
+        const { playerId } = req.params;
+    
+        if (!playerId) {
+            return res.status(400).json({ error: 'O ID do jogador é obrigatório' });
+        }
+    
+        try {
+            const matches = await prisma.match.findMany({
+                where: {
+                    teams: {
+                        some: {
+                            players: {
+                                some: {
+                                    playerId: Number(playerId),
+                                },
+                            },
+                        },
+                    },
+                },
+                include: {
+                    court: true,
+                    teams: {
+                        include: {
+                            players: {
+                                include: {
+                                    player: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+    
+            if (matches.length === 0) {
+                return res.status(404).json({ error: 'Nenhuma partida encontrada para este jogador' });
+            }
+    
+            res.status(200).json(matches);
+        } catch (error) {
+            console.error('Erro ao listar partidas pelo jogador:', error);
+            res.status(500).json({ error: 'Erro ao listar partidas pelo jogador' });
+        }
+    }
+    
+
     static async getTeamByMatchId(req: Request, res: Response) {
         const { matchId } = req.params;
 

@@ -88,6 +88,14 @@ router.get('/matches/getByCourtId/:courtId', authenticateToken, async (req: Requ
     }
 });
 
+router.get('/matches/getByPlayerId/:playerId', authenticateToken, async (req: Request, res: Response) => {
+    try {
+        await MatchController.getMatchesByPlayerId(req, res);
+    } catch (error: any) {
+        res.status(500).json({ message: 'Erro ao buscar a partida', error: error.message });
+    }
+});
+
 router.post('/news', authenticateToken, async (req: Request, res: Response) => {
     try {
         await NewsController.createNews(req, res);
